@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-using static LootValue.Globals;
+﻿using System.Collections.Generic;
 
-namespace LootValue
+namespace LootValueEX
 {
 	public struct LootValueConfigColor
 	{
@@ -73,7 +67,7 @@ namespace LootValue
 			}
 			else
 			{
-				logger.LogError($"Custom colors string format was invalid. Load default colors");
+				Mod.Log.LogError($"Custom colors string format was invalid. Load default colors");
 				UseDefaultColors();
 			}
 		}
@@ -94,13 +88,13 @@ namespace LootValue
 
 				if (!bound.StartsWith("["))
 				{
-					logger.LogWarning($"Custom color format failed. Entry #{i} must start with an [");
+                    Mod.Log.LogWarning($"Custom color format failed. Entry #{i} must start with an [");
 					return false;
 				} 
 
 				if (!bound.EndsWith("]"))
 				{
-					logger.LogWarning($"Custom color format failed. Entry #{i} must end with an ]");
+                    Mod.Log.LogWarning($"Custom color format failed. Entry #{i} must end with an ]");
 					return false;
 				}
 
@@ -113,14 +107,14 @@ namespace LootValue
 							continue;
 						else
 						{
-							logger.LogWarning($"Custom color format failed. Entry #{i} has invalid upper bound");
+                            Mod.Log.LogWarning($"Custom color format failed. Entry #{i} has invalid upper bound");
 							return false;
 						}
 					}
 				}
 				else
 				{
-					logger.LogWarning($"Custom color format failed. Entry #{i} is missing element");
+                    Mod.Log.LogWarning($"Custom color format failed. Entry #{i} is missing element");
 					return false;
 				}
 			}

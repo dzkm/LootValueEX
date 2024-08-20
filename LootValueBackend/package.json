@@ -4,7 +4,7 @@
     "main": "src/LootValueStaticRouter.js",
     "license": "MIT",
     "author": "IhanaMies",
-    "akiVersion": "~3.7",
+    "sptVersion": "~3.7",
     "scripts": {
         "setup": "npm i",
         "build": "node ./packageBuild.ts"

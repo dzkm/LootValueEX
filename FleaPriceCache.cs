@@ -1,16 +1,9 @@
-﻿using SPT.Common.Http;
-using SPT.Common.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using static LootValue.Globals;
-using static System.Collections.Specialized.BitVector32;
-using System.IO;
 
-namespace LootValue
+namespace LootValueEX
 {
 	internal static class FleaPriceCache
 	{
@@ -18,9 +11,9 @@ namespace LootValue
 
 		public static async Task<double?> FetchPrice(string templateId)
 		{
-			bool fleaAvailable = Session.RagFair.Available || LootValueMod.ShowFleaPriceBeforeAccess.Value;
+			bool fleaAvailable = Shared.Session.RagFair.Available || Common.Settings.ShowFleaPriceBeforeAccess.Value;
 
-			if (!fleaAvailable || !LootValueMod.EnableFleaQuickSell.Value)
+			if (!fleaAvailable || !Common.Settings.EnableFleaQuickSell.Value)
 				return null;
 
 			if (cache.ContainsKey(templateId))
@@ -37,7 +30,7 @@ namespace LootValue
 
 		private static async Task<string> QueryPrice(string templateId)
 		{
-			return await CustomRequestHandler.PostJsonAsync("/LootValue/GetItemLowestFleaPrice", JsonConvert.SerializeObject(new FleaPriceRequest(templateId)));
+			return await CustomRequestHandler.PostJsonAsync("/LootValue/GetItemLowestFleaPrice", JsonConvert.SerializeObject(new Structs.FleaPriceRequest(templateId)));
 		}
 
 		private static async Task<double?> QueryAndTryUpsertPrice(string templateId, bool update)

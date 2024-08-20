@@ -8,11 +8,11 @@ import { IProcessSellTradeRequestData } from "@spt-aki/models/eft/trade/IProcess
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
 import { SaveServer } from '@spt-aki/servers/SaveServer';
 
-import type { IPreAkiLoadMod } from "@spt-aki/models/external/IPreAkiLoadMod";
+import type { IPreSptLoadMod } from "@spt-aki/models/external/IPreSptLoadMod";
 import type { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import type { StaticRouterModService} from "@spt-aki/services/mod/staticRouter/StaticRouterModService";
 
-class Mod implements IPreAkiLoadMod
+class Mod implements IPreSptLoadMod
 {
 	private itemHelper: ItemHelper;
 	private offerService: RagfairOfferService;
@@ -22,7 +22,7 @@ class Mod implements IPreAkiLoadMod
 
 	private logger: ILogger;
 	
-    public preAkiLoad(container: DependencyContainer): void {
+    public preSptLoad(container: DependencyContainer): void {
         const logger = container.resolve<ILogger>("WinstonLogger");
 		this.logger = logger;
 		
@@ -101,8 +101,8 @@ class Mod implements IPreAkiLoadMod
 				scheme_id: 0
 			}]
 		};
-
-		let response: IItemEventRouterResponse = this.tradeHelper.sellItem(pmcData, pmcData, sellRequest, sessionId);
+		let response: IItemEventRouterResponse;
+		this.tradeHelper.sellItem(pmcData, pmcData, sellRequest, sessionId, response);
 		this.saveServer.saveProfile(sessionId);
 		return true;
 	}

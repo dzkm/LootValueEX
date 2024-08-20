@@ -1,0 +1,778 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1C987E9F-C3DF-456E-A956-CE3A11E960A7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LootValue</RootNamespace>
+    <AssemblyName>LootValue</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>false</Deterministic>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="CustomRequestHandler.cs" />
+    <Compile Include="Extensions\TooltipExtensions.cs" />
+    <Compile Include="Extensions\TraderClassExtensions.cs" />
+    <Compile Include="Extensions\PlayerExtensions.cs" />
+    <Compile Include="FleaPriceCache.cs" />
+    <Compile Include="Extensions\NumberExtensions.cs" />
+    <Compile Include="Shared.cs" />
+    <Compile Include="Common\Tooltip.cs" />
+    <Compile Include="Structs\FleaPriceRequest.cs" />
+    <Compile Include="Patches\ItemViewOnClickPatch.cs" />
+    <Compile Include="Patches\GridItemOnPointerEnterPatch.cs" />
+    <Compile Include="Patches\GridItemOnPointerExitPatch.cs" />
+    <Compile Include="Patches\TraderPatch.cs" />
+    <Compile Include="Plugin.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Patches\ShowTooltipPatch.cs" />
+    <Compile Include="Common\Settings.cs" />
+    <Compile Include="Structs\SellItemToTraderRequest.cs" />
+    <Compile Include="SlotColoring.cs" />
+    <Compile Include="Structs\ToolTipText.cs" />
+    <Compile Include="Structs\TraderOffer.cs" />
+    <Compile Include="Utils\ItemUtils.cs" />
+    <Compile Include="Utils\OfferUtils.cs" />
+    <Compile Include="Utils\RagfairUtils.cs" />
+    <Compile Include="Utils\RaidUtils.cs" />
+    <Compile Include="Utils\SettingsUtils.cs" />
+    <Compile Include="Utils\TraderUtils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Assets\Config.json" />
+    <None Include="Assets\Locale\en.json" />
+    <None Include="LootValueBackend\.eslintignore" />
+    <None Include="LootValueBackend\.eslintrc.json" />
+    <None Include="LootValueBackend\.vs\LootValueBackend\CopilotIndices\0.2.1627.58842\CodeChunks.db" />
+    <None Include="LootValueBackend\.vs\LootValueBackend\CopilotIndices\0.2.1627.58842\CodeChunks.db-shm" />
+    <None Include="LootValueBackend\.vs\LootValueBackend\CopilotIndices\0.2.1627.58842\CodeChunks.db-wal" />
+    <None Include="LootValueBackend\.vs\LootValueBackend\CopilotIndices\0.2.1627.58842\SemanticSymbols.db" />
+    <None Include="LootValueBackend\.vs\LootValueBackend\CopilotIndices\0.2.1627.58842\SemanticSymbols.db-shm" />
+    <None Include="LootValueBackend\.vs\LootValueBackend\CopilotIndices\0.2.1627.58842\SemanticSymbols.db-wal" />
+    <None Include="LootValueBackend\.vs\LootValueBackend\FileContentIndex\46f5d19c-5de9-49bc-b313-15b7e5afed5c.vsidx" />
+    <None Include="LootValueBackend\.vs\slnx.sqlite" />
+    <None Include="LootValueBackend\config.json" />
+    <None Include="LootValueBackend\LICENSE" />
+    <None Include="LootValueBackend\package.json" />
+    <None Include="LootValueBackend\tsconfig.json" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json.Bson, Version=1.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.Bson.1.0.2\lib\net45\Newtonsoft.Json.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="PhysicsModule">
+      <HintPath>..\..\EscapeFromTarkov_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>..\..\BepInEx\core\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="spt-common">
+      <HintPath>..\..\BepInEx\plugins\spt\spt-common.dll</HintPath>
+    </Reference>
+    <Reference Include="spt-reflection">
+      <HintPath>..\..\BepInEx\plugins\spt\spt-reflection.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\EscapeFromTarkov_Data\Managed\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="BepInEx">
+      <HintPath>..\..\BepInEx\core\BepInEx.dll</HintPath>
+    </Reference>
+    <Reference Include="Comfort">
+      <HintPath>..\..\EscapeFromTarkov_Data\Managed\Comfort.dll</HintPath>
+    </Reference>
+    <Reference Include="Comfort.Unity, Version=1.0.0.4, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\EscapeFromTarkov_Data\Managed\Comfort.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Sirenix.Serialization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\EscapeFromTarkov_Data\Managed\Sirenix.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.WebApi.Client.6.0.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\EscapeFromTarkov_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\EscapeFromTarkov_Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\EscapeFromTarkov_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\..\EscapeFromTarkov_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\EscapeFromTarkov_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.InputLegacyModule">
+      <HintPath>..\..\EscapeFromTarkov_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\EscapeFromTarkov_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\EscapeFromTarkov_Data\Managed\UnityEngine.UI.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="LootValueBackend\.gitattributes" />
+    <Content Include="LootValueBackend\.gitignore" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="LootValueBackend\packageBuild.ts" />
+    <TypeScriptCompile Include="LootValueBackend\src\LootValueStaticRouter.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\callbacks\BotCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\callbacks\BundleCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\callbacks\CustomizationCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\callbacks\DataCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\callbacks\DialogueCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\callbacks\GameCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\callbacks\HandbookCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\callbacks\HealthCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\callbacks\HideoutCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\callbacks\HttpCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\callbacks\InraidCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\callbacks\InsuranceCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\callbacks\InventoryCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\callbacks\ItemEventCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\callbacks\LauncherCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\callbacks\LocationCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\callbacks\MatchCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\callbacks\ModCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\callbacks\NoteCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\callbacks\NotifierCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\callbacks\PresetBuildCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\callbacks\PresetCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\callbacks\ProfileCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\callbacks\QuestCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\callbacks\RagfairCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\callbacks\RepairCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\callbacks\SaveCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\callbacks\TradeCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\callbacks\TraderCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\callbacks\WeatherCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\callbacks\WishlistCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\context\ApplicationContext.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\context\ContextVariable.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\context\ContextVariableType.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\controllers\BotController.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\controllers\CustomizationController.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\controllers\DialogueController.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\controllers\GameController.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\controllers\HandbookController.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\controllers\HealthController.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\controllers\HideoutController.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\controllers\InraidController.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\controllers\InsuranceController.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\controllers\InventoryController.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\controllers\LauncherController.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\controllers\LocationController.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\controllers\MatchController.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\controllers\NoteController.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\controllers\NotifierController.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\controllers\PresetBuildController.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\controllers\PresetController.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\controllers\ProfileController.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\controllers\QuestController.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\controllers\RagfairController.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\controllers\RepairController.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\controllers\RepeatableQuestController.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\controllers\TradeController.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\controllers\TraderController.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\controllers\WeatherController.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\controllers\WishlistController.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\di\Container.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\di\OnLoad.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\di\OnUpdate.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\di\Router.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\di\Serializer.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\ErrorHandler.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\generators\BotEquipmentModGenerator.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\generators\BotGenerator.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\generators\BotInventoryGenerator.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\generators\BotLevelGenerator.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\generators\BotLootGenerator.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\generators\BotWeaponGenerator.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\generators\FenceBaseAssortGenerator.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\generators\LocationGenerator.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\generators\LootGenerator.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\generators\PlayerScavGenerator.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\generators\PMCLootGenerator.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\generators\RagfairAssortGenerator.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\generators\RagfairOfferGenerator.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\generators\ScavCaseRewardGenerator.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\generators\weapongen\IInventoryMagGen.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\generators\weapongen\implementations\BarrelInventoryMagGen.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\generators\weapongen\implementations\ExternalInventoryMagGen.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\generators\weapongen\implementations\InternalMagazineInventoryMagGen.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\generators\weapongen\implementations\UbglExternalMagGen.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\generators\weapongen\InventoryMagGen.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\generators\WeatherGenerator.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\AssortHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\BotDifficultyHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\BotGeneratorHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\BotHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\BotWeaponGeneratorHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\ContainerHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\DialogueHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\DurabilityLimitsHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\GameEventHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\HandbookHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\HealthHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\HideoutHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\HttpServerHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\InRaidHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\InventoryHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\ItemHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\NotificationSendHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\NotifierHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\PaymentHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\PresetHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\ProbabilityHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\ProfileHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\QuestConditionHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\QuestHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\RagfairHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\RagfairOfferHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\RagfairSellHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\RagfairServerHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\RagfairSortHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\RepairHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\SecureContainerHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\TradeHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\TraderAssortHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\TraderHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\UtilityHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\helpers\WeightedRandomHelper.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\ide\BleedingEdgeEntry.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\ide\DebugEntry.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\ide\ReleaseEntry.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\ide\TestEntry.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\loaders\BundleLoader.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\loaders\ModTypeCheck.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\loaders\PostAkiModLoader.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\loaders\PostDBModLoader.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\loaders\PreAkiModLoader.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\common\MinMax.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\bot\IGenerateBotsRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\bot\IRandomisedBotLevelResult.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\common\IEmptyRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\common\IGlobals.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\common\ILocation.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\common\ILocationBase.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\common\ILocationsSourceDestinationBase.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\common\ILooseLoot.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\common\IMetricsTableData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\common\IPmcData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\common\Ixyz.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\common\request\IBaseInteractionRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\common\tables\IBotBase.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\common\tables\IBotCore.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\common\tables\IBotType.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\common\tables\ICustomizationItem.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\common\tables\IHandbookBase.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\common\tables\IItem.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\common\tables\ILocationsBase.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\common\tables\ILootBase.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\common\tables\IMatch.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\common\tables\IProfileTemplate.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\common\tables\IQuest.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\common\tables\IRepeatableQuests.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\common\tables\ITemplateItem.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\common\tables\ITrader.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\customization\IBuyClothingRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\customization\IGetSuitsResponse.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\customization\IWearClothingRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\dialog\IAcceptFriendRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\dialog\IChatServer.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\dialog\IClearMailMessageRequest.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\dialog\IDeleteFriendRequest.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\dialog\IFriendRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\dialog\IFriendRequestSendResponse.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\dialog\IGetAllAttachmentsRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\dialog\IGetAllAttachmentsResponse.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\dialog\IGetChatServerListRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\dialog\IGetFriendListDataResponse.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\dialog\IGetMailDialogInfoRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\dialog\IGetMailDialogListRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\dialog\IGetMailDialogViewRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\dialog\IGetMailDialogViewResponseData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\dialog\IPinDialogRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\dialog\IRemoveDialogRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\dialog\IRemoveMailMessageRequest.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\dialog\ISendMessageRequest.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\dialog\ISetDialogReadRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\game\ICheckVersionResponse.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\game\ICurrentGroupResponse.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\game\IGameConfigResponse.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\game\IGameEmptyCrcRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\game\IGameKeepAliveResponse.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\game\IGameLogoutResponseData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\game\IGameStartResponse.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\game\IGetItemPricesResponse.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\game\IReportNicknameRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\game\IServerDetails.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\game\IVersionValidateRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\health\Effect.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\health\IHealthTreatmentRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\health\IOffraidEatRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\health\IOffraidHealRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\health\ISyncHealthRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\health\IWorkoutData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\hideout\HideoutUpgradeCompleteRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\hideout\IHandleQTEEventRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\hideout\IHideoutArea.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\hideout\IHideoutContinuousProductionStartRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\hideout\IHideoutImproveAreaRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\hideout\IHideoutProduction.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\hideout\IHideoutPutItemInRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\hideout\IHideoutScavCase.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\hideout\IHideoutScavCaseStartRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\hideout\IHideoutSettingsBase.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\hideout\IHideoutSingleProductionStartRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\hideout\IHideoutTakeItemOutRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\hideout\IHideoutTakeProductionRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\hideout\IHideoutToggleAreaRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\hideout\IHideoutUpgradeCompleteRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\hideout\IHideoutUpgradeRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\hideout\IQteData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\hideout\IRecordShootingRangePoints.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\httpResponse\IGetBodyResponseData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\httpResponse\INullResponseData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\inRaid\IInsuredItemsData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\inRaid\IRegisterPlayerRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\inRaid\ISaveProgressRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\insurance\IGetInsuranceCostRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\insurance\IGetInsuranceCostResponseData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\insurance\IInsureRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\inventory\IAddItemRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\inventory\IAddItemTempObject.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\inventory\IInventoryAddRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\inventory\IInventoryBaseActionRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\inventory\IInventoryBindRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\inventory\IInventoryCreateMarkerRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\inventory\IInventoryDeleteMarkerRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\inventory\IInventoryEditMarkerRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\inventory\IInventoryExamineRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\inventory\IInventoryFoldRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\inventory\IInventoryMergeRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\inventory\IInventoryMoveRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\inventory\IInventoryReadEncyclopediaRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\inventory\IInventoryRemoveRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\inventory\IInventorySortRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\inventory\IInventorySplitRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\inventory\IInventorySwapRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\inventory\IInventoryTagRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\inventory\IInventoryToggleRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\inventory\IInventoryTransferRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\inventory\IOpenRandomLootContainerRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\itemEvent\IEmptyItemEventRouterResponse.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\itemEvent\IItemEventRouterBase.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\itemEvent\IItemEventRouterRequest.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\itemEvent\IItemEventRouterResponse.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\launcher\IChangeRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\launcher\IGetMiniProfileRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\launcher\ILoginRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\launcher\IMiniProfile.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\launcher\IRegisterData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\launcher\IRemoveProfileData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\location\IAirdropLootResult.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\location\IGetLocationRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\match\IAcceptGroupInviteRequest.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\match\IAcceptGroupInviteResponse.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\match\ICancelGroupInviteRequest.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\match\ICreateGroupRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\match\IEndOfflineRaidRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\match\IGetGroupStatusRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\match\IGetProfileRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\match\IGetRaidConfigurationRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\match\IJoinMatchRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\match\IJoinMatchResult.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\match\IPutMetricsRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\match\IRemovePlayerFromGroupRequest.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\match\ISendGroupInviteRequest.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\match\ITransferGroupRequest.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\match\IUpdatePingRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\notes\INoteActionData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\notifier\INotifier.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\notifier\ISelectProfileRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\notifier\ISelectProfileResponse.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\player\IPlayerIncrementSkillLevelRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\presetBuild\IPresetBuildActionRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\presetBuild\IRemoveBuildRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\profile\GetProfileStatusResponseData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\profile\IAkiProfile.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\profile\IConnectResponse.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\profile\IGetProfileSettingsRequest.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\profile\IProfileChangeNicknameRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\profile\IProfileChangeVoiceRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\profile\IProfileCreateRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\profile\ISearchFriendRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\profile\ISearchFriendResponse.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\profile\IValidateNicknameRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\quests\IAcceptQuestRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\quests\ICompleteQuestRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\quests\IFailQuestRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\quests\IHandoverQuestRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\quests\IListQuestsRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\quests\IRepeatableQuestChangeRequest.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\ragfair\IAddOfferRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\ragfair\IExtendOfferRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\ragfair\IGetItemPriceResult.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\ragfair\IGetMarketPriceRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\ragfair\IGetOffersResult.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\ragfair\IRagfairOffer.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\ragfair\IRemoveOfferRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\ragfair\ISearchRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\ragfair\ISendRagfairReportRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\ragfair\IStorePlayerOfferTaxAmountRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\repair\IBaseRepairActionDataRequest.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\repair\IRepairActionDataRequest.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\repair\ITraderRepairActionDataRequest.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\trade\IProcessBaseTradeRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\trade\IProcessBuyTradeRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\trade\IProcessRagfairTradeRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\trade\IProcessSellTradeRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\trade\ISellScavItemsToFenceRequestData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\weather\IWeatherData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\eft\wishlist\IWishlistActionData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\AccountTypes.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\AirdropType.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\AmmoTypes.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\BackendErrorCodes.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\BaseClasses.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\BotAmount.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\BotDifficulty.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\ConfigTypes.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\ContainerTypes.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\ELocationName.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\EquipmentBuildType.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\EquipmentSlots.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\ExitStatis.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\GiftSenderType.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\GiftSentResult.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\HideoutAreas.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\HideoutEventActions.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\ItemAddedResult.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\ItemEventActions.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\MemberCategory.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\MessageType.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\Money.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\PlayerRaidEndState.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\QuestRewardType.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\QuestStatus.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\QuestTypeEnum.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\RagfairSort.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\RaidMode.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\SeasonalEventType.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\SkillTypes.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\Traders.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\WeaponSkillTypes.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\WeaponTypes.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\WeatherType.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\WildSpawnTypeNumber.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\enums\WindDirection.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\external\HttpFramework.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\external\IPostAkiLoadMod.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\external\IPostAkiLoadModAsync.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\external\IPostDBLoadMod.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\external\IPostDBLoadModAsync.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\external\IPreAkiLoadMod.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\external\IPreAkiLoadModAsync.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\external\tsyringe.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\bindings\Route.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\bots\BotGenerationDetails.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\bots\GenerateWeaponResult.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\bots\IBotLootCache.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\callbacks\IBotCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\callbacks\IBundleCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\callbacks\ICustomizationCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\callbacks\IDataCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\callbacks\IDialogueCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\callbacks\IGameCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\callbacks\IHandbookCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\callbacks\IHealthCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\callbacks\IHideoutCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\callbacks\IHttpCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\callbacks\IInraidCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\callbacks\IInsuranceCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\callbacks\IInventoryCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\callbacks\IItemEventCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\callbacks\ILauncherCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\callbacks\ILocationCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\callbacks\IModCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\callbacks\INoteCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\callbacks\INotifierCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\callbacks\IPresetBuildCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\callbacks\IPresetCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\callbacks\IProfileCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\callbacks\IQuestCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\callbacks\IRagfairCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\callbacks\IRepairCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\callbacks\ISaveCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\callbacks\ITradeCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\callbacks\ITraderCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\callbacks\IWeatherCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\callbacks\IWishlistCallbacks.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\config\IAirdropConfig.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\config\IBaseConfig.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\config\IBotConfig.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\config\IBotDurability.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\config\ICoreConfig.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\config\IGiftsConfig.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\config\IHealthConfig.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\config\IHideoutConfig.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\config\IHttpConfig.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\config\IInRaidConfig.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\config\IInsuranceConfig.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\config\IInventoryConfig.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\config\IItemConfig.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\config\ILocaleConfig.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\config\ILocationConfig.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\config\ILootConfig.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\config\ILostOnDeathConfig.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\config\IMatchConfig.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\config\IPlayerScavConfig.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\config\IPmcConfig.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\config\IPmChatResponse.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\config\IQuestConfig.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\config\IRagfairConfig.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\config\IRepairConfig.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\config\IScavCaseConfig.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\config\ISeasonalEventConfig.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\config\ITraderConfig.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\config\IWeatherConfig.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\controllers\IBotController.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\dialog\ISendMessageDetails.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\generators\IBotGenerator.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\generators\ILocationGenerator.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\generators\IPMCLootGenerator.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\generators\IRagfairAssortGenerator.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\generators\IRagfairOfferGenerator.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\hideout\ScavCaseRewardCountsAndPrices.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\logging\LogBackgroundColor.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\logging\LogTextColor.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\logging\SptLogger.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\mod\IModLoader.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\mod\IPackageJsonData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\mod\NewItemDetails.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\ragfair\IRagfairServerPrices.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\server\IDatabaseTables.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\server\ILocaleBase.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\server\ILocations.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\server\IServerBase.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\server\ISettingsBase.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\services\CustomPreset.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\services\CustomTraderAssortData.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\services\LootItem.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\services\LootRequest.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\utils\IAsyncQueue.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\utils\ICommand.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\utils\ILogger.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\models\spt\utils\IUuidGenerator.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\Program.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\dynamic\BotDynamicRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\dynamic\BundleDynamicRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\dynamic\CustomizationDynamicRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\dynamic\DataDynamicRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\dynamic\HttpDynamicRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\dynamic\InraidDynamicRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\dynamic\LocationDynamicRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\dynamic\NotifierDynamicRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\dynamic\TraderDynamicRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\EventOutputHolder.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\HttpRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\ImageRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\ItemEventRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\item_events\CustomizationItemEventRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\item_events\HealthItemEventRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\item_events\HideoutItemEventRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\item_events\InsuranceItemEventRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\item_events\InventoryItemEventRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\item_events\NoteItemEventRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\item_events\PresetBuildItemEventRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\item_events\QuestItemEventRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\item_events\RagfairItemEventRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\item_events\RepairItemEventRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\item_events\TradeItemEventRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\item_events\WishlistItemEventRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\save_load\HealthSaveLoadRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\save_load\InraidSaveLoadRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\save_load\InsuranceSaveLoadRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\save_load\ProfileSaveLoadRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\serializers\BundleSerializer.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\serializers\ImageSerializer.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\serializers\NotifySerializer.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\static\BotStaticRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\static\BundleStaticRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\static\CustomizationStaticRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\static\DataStaticRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\static\DialogStaticRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\static\GameStaticRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\static\HealthStaticRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\static\InraidStaticRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\static\InsuranceStaticRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\static\ItemEventStaticRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\static\LauncherStaticRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\static\LocationStaticRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\static\MatchStaticRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\static\NotifierStaticRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\static\PresetStaticRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\static\ProfileStaticRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\static\QuestStaticRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\static\RagfairStaticRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\static\TraderStaticRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\routers\static\WeatherStaticRouter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\servers\ConfigServer.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\servers\DatabaseServer.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\servers\HttpServer.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\servers\http\AkiHttpListener.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\servers\http\HttpBufferHandler.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\servers\http\HttpMethods.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\servers\http\IHttpListener.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\servers\RagfairServer.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\servers\SaveServer.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\servers\WebSocketServer.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\BotEquipmentFilterService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\BotEquipmentModPoolService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\BotGenerationCacheService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\BotLootCacheService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\BotWeaponModLimitService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\CustomLocationWaveService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\FenceService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\GiftService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\HashCacheService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\InsuranceService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\ItemBaseClassService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\ItemFilterService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\LocaleService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\LocalisationService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\MailSendService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\MatchBotDetailsCacheService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\MatchLocationService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\ModCompilerService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\mod\CustomItemService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\mod\dynamicRouter\DynamicRouterMod.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\mod\dynamicRouter\DynamicRouterModService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\mod\httpListener\HttpListenerMod.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\mod\httpListener\HttpListenerModService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\mod\image\imageRouteService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\mod\onLoad\OnLoadMod.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\mod\onLoad\OnLoadModService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\mod\onUpdate\OnUpdateMod.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\mod\onUpdate\OnUpdateModService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\mod\staticRouter\StaticRouterMod.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\mod\staticRouter\StaticRouterModService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\NotificationService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\OpenZoneService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\PaymentService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\PlayerService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\PmcChatResponseService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\ProfileFixerService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\ProfileSnapshotService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\RagfairCategoriesService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\RagfairLinkedItemService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\RagfairOfferService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\RagfairPriceService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\RagfairRequiredItemsService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\RagfairTaxService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\RepairService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\SeasonalEventService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\TraderAssortService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\services\TraderPurchasePersisterService.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\TYPES.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\utils\App.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\utils\AsyncQueue.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\utils\collections\lists\LinkedList.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\utils\collections\queue\Queue.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\utils\DatabaseImporter.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\utils\EncodingUtil.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\utils\HashUtil.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\utils\HttpFileUtil.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\utils\HttpResponseUtil.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\utils\ImporterUtil.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\utils\JsonUtil.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\utils\logging\AbstractWinstonLogger.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\utils\logging\WinstonMainLogger.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\utils\logging\WinstonRequestLogger.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\utils\MathUtil.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\utils\ObjectId.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\utils\RagfairOfferHolder.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\utils\RandomUtil.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\utils\TimeUtil.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\utils\UUidGenerator.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\utils\VFS.d.ts" />
+    <TypeScriptCompile Include="LootValueBackend\types\utils\Watermark.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="LootValueBackend\.vs\LootValueBackend\v17\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(SolutionDir)bin\$(ConfigurationName)\LootValue.dll" "G:\Games\EFT Fika - DEV\BepInEx\plugins\LootValue\"
+copy "$(SolutionDir)bin\$(ConfigurationName)\LootValue.dll" "$(SolutionDir)Releases\BepInEx\plugins\LootValue\"
+
+REM npm run build
+
+REM XCOPY /Y /R /E /C "$(SolutionDir)LootValueBackend\dist\*" "G:\Games\EFT Fika - DEV\user\mods\LootValueBackend\"</PostBuildEvent>
+  </PropertyGroup>
+</Project>
