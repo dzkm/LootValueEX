@@ -9,7 +9,7 @@ namespace LootValueEX
         // BepinEx
         public const string pluginGuid = "dev.dfms.LootValueEX";
         public const string pluginName = "LootValueEX";
-        public const string pluginVersion = "0.1.0";
+        public const string pluginVersion = "0.2.0";
 		public static ManualLogSource Log;
 
         private void Awake()
@@ -25,7 +25,8 @@ namespace LootValueEX
 			new Patches.ItemViewOnClickPatch().Enable();
 			new Patches.Inventory.InventoryScreenShowPostPatch().Enable();
 			new Patches.Inventory.TransferItemsScreenShowPostPatch().Enable();
-			new Patches.WhatScreenIsThisPatch().Enable();
+			new Patches.Inventory.ScavInvetoryShowPostPatch().Enable();
+            new Patches.WhatScreenIsThisPatch().Enable();
 
 			Config.SettingChanged += Utils.SettingsUtils.SettingsChangedEvent;
 		}

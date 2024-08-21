@@ -31,7 +31,7 @@ namespace LootValueEX.Patches.Inventory
         }
         public static void RecursiveSearch(Item item)
         {
-            Mod.Log.LogInfo(string.Format("Item name: {0} -> {1}", item.LocalizedName(), item.GetType()));
+            Mod.Log.LogInfo(string.Format("Item name: {0} -> {1} ({2})", item.LocalizedName(), item.GetType(), item.Parent?.ContainerName.Localized()));
             item.GetAllItems().Where(queryItem => !queryItem.Equals(item)).Do(RecursiveSearch);
         }
     }

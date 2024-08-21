@@ -39,6 +39,7 @@
     <Compile Include="FleaPriceCache.cs" />
     <Compile Include="Extensions\NumberExtensions.cs" />
     <Compile Include="Patches\Inventory\InventoryScreenShowPostPatch.cs" />
+    <Compile Include="Patches\Inventory\ScavInvetoryShowPostPatch.cs" />
     <Compile Include="Patches\Inventory\TransferItemsScreenShowPostPatch.cs" />
     <Compile Include="Patches\WhatScreenIsThisPatch.cs" />
     <Compile Include="Shared.cs" />
