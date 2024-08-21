@@ -31,7 +31,6 @@ namespace LootValueEX
         public static ISession Session => ClientAppUtils.GetMainApp().GetClientBackEndSession();
         public static ManualLogSource logger { get; set; }
         public static Item hoveredItem;
-        public static SimpleTooltip tooltip;
         public static List<string> blacklistedTraders = new List<string>();
 
         //Credit to DrakiaXYZ. Modified by me

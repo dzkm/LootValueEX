@@ -23,6 +23,9 @@ namespace LootValueEX
 			new Patches.GridItemOnPointerEnterPatch().Enable();
 			new Patches.GridItemOnPointerExitPatch().Enable();
 			new Patches.ItemViewOnClickPatch().Enable();
+			new Patches.Inventory.InventoryScreenShowPostPatch().Enable();
+			new Patches.Inventory.TransferItemsScreenShowPostPatch().Enable();
+			new Patches.WhatScreenIsThisPatch().Enable();
 
 			Config.SettingChanged += Utils.SettingsUtils.SettingsChangedEvent;
 		}

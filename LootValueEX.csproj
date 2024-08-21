@@ -7,8 +7,8 @@
     <ProjectGuid>{1C987E9F-C3DF-456E-A956-CE3A11E960A7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LootValue</RootNamespace>
-    <AssemblyName>LootValue</AssemblyName>
+    <RootNamespace>LootValueEX</RootNamespace>
+    <AssemblyName>LootValueEX</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>false</Deterministic>
@@ -38,6 +38,9 @@
     <Compile Include="Extensions\PlayerExtensions.cs" />
     <Compile Include="FleaPriceCache.cs" />
     <Compile Include="Extensions\NumberExtensions.cs" />
+    <Compile Include="Patches\Inventory\InventoryScreenShowPostPatch.cs" />
+    <Compile Include="Patches\Inventory\TransferItemsScreenShowPostPatch.cs" />
+    <Compile Include="Patches\WhatScreenIsThisPatch.cs" />
     <Compile Include="Shared.cs" />
     <Compile Include="Common\Tooltip.cs" />
     <Compile Include="Structs\FleaPriceRequest.cs" />
@@ -768,8 +771,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(SolutionDir)bin\$(ConfigurationName)\LootValue.dll" "G:\Games\EFT Fika - DEV\BepInEx\plugins\LootValue\"
-copy "$(SolutionDir)bin\$(ConfigurationName)\LootValue.dll" "$(SolutionDir)Releases\BepInEx\plugins\LootValue\"
+    <PostBuildEvent>copy "$(SolutionDir)bin\$(ConfigurationName)\LootValueEX.dll" "G:\Games\EFT Fika - DEV\BepInEx\plugins\LootValue\"
+copy "$(SolutionDir)bin\$(ConfigurationName)\LootValueEX.dll" "$(SolutionDir)Releases\BepInEx\plugins\LootValue\"
 
 REM npm run build
 
