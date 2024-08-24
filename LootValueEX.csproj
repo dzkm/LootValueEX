@@ -32,6 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Common\TaskCache.cs" />
     <Compile Include="CustomRequestHandler.cs" />
     <Compile Include="Extensions\TooltipExtensions.cs" />
     <Compile Include="Extensions\TraderClassExtensions.cs" />
@@ -39,7 +40,7 @@
     <Compile Include="FleaPriceCache.cs" />
     <Compile Include="Extensions\NumberExtensions.cs" />
     <Compile Include="Patches\Inventory\InventoryScreenShowPostPatch.cs" />
-    <Compile Include="Patches\Inventory\ScavInvetoryShowPostPatch.cs" />
+    <Compile Include="Patches\Inventory\ScavInventoryShowPostPatch.cs" />
     <Compile Include="Patches\Inventory\TransferItemsScreenShowPostPatch.cs" />
     <Compile Include="Patches\WhatScreenIsThisPatch.cs" />
     <Compile Include="Shared.cs" />
@@ -53,10 +54,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Patches\ShowTooltipPatch.cs" />
     <Compile Include="Common\Settings.cs" />
+    <Compile Include="Structs\TimestampedTask.cs" />
+    <Compile Include="Structs\Offers\RagfairOffer.cs" />
     <Compile Include="Structs\SellItemToTraderRequest.cs" />
     <Compile Include="SlotColoring.cs" />
     <Compile Include="Structs\ToolTipText.cs" />
-    <Compile Include="Structs\TraderOffer.cs" />
+    <Compile Include="Structs\Offers\TraderOffer.cs" />
     <Compile Include="Utils\ItemUtils.cs" />
     <Compile Include="Utils\OfferUtils.cs" />
     <Compile Include="Utils\RagfairUtils.cs" />
@@ -135,6 +138,7 @@
     <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>

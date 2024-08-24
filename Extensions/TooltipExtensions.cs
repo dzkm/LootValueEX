@@ -22,7 +22,7 @@ namespace LootValueEX.Extensions
             {
                 return "<br><color=#ff0000>Not available for selling</color>";
             }
-
+            // TODO: Fix this stinky code. Will show a wrong value when the item is on trader and stackable.
             double singularPrice = bestValue / toolTipText.ItemStackCount;
             string perSlotColor = SlotColoring.GetColorFromValuePerSlots((int)bestValue);
             string highlightText = $"<color=#FDDD45>{bestSeller}</color>";

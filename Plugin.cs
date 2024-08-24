@@ -11,11 +11,13 @@ namespace LootValueEX
         public const string pluginName = "LootValueEX";
         public const string pluginVersion = "0.2.0";
 		public static ManualLogSource Log;
+		internal static Common.TaskCache TaskCache;
 
         private void Awake()
 		{
             Config.SaveOnConfigSet = true;
 			Log = base.Logger;
+			TaskCache = new Common.TaskCache();
             Utils.SettingsUtils.SetupSettings(Config);
 
 			new Patches.TraderPatch().Enable();
@@ -25,10 +27,10 @@ namespace LootValueEX
 			new Patches.ItemViewOnClickPatch().Enable();
 			new Patches.Inventory.InventoryScreenShowPostPatch().Enable();
 			new Patches.Inventory.TransferItemsScreenShowPostPatch().Enable();
-			new Patches.Inventory.ScavInvetoryShowPostPatch().Enable();
+			new Patches.Inventory.ScavInventoryShowPostPatch().Enable();
             new Patches.WhatScreenIsThisPatch().Enable();
 
-			Config.SettingChanged += Utils.SettingsUtils.SettingsChangedEvent;
+            Config.SettingChanged += Utils.SettingsUtils.SettingsChangedEvent;
 		}
 	}
 }

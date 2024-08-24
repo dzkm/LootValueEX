@@ -36,7 +36,7 @@ namespace LootValueEX.Utils
             return size.X * size.Y;
         }
 
-        internal static Structs.TraderOffer GetBestTradingOffer(Item item)
+        internal async static Task<Structs.TraderOffer> GetBestTradingOffer(Item item)
         {
             if (!ClientAppUtils.GetMainApp().GetClientBackEndSession().Profile.Examined(item))
             {
@@ -46,7 +46,7 @@ namespace LootValueEX.Utils
             {
                 item = UnstackItem(item);
             }
-            return TraderUtils.GetItemHighestTradingOffer(item);
+            return await TraderUtils.GetItemHighestTradingOffer(item, new System.Threading.CancellationTokenSource(5000).Token);
         }
 
         internal async static Task<double> GetRagfairPrice(Item item)
@@ -56,9 +56,9 @@ namespace LootValueEX.Utils
             {
                 return 0;
             }
-            if (!IsItemFromTraderOrRagfair(item))
+            if (IsItemFromTraderOrRagfair(item))
             {
-                return 0;
+                item = UnstackItem(item);
             }
 
             if (Shared.hoveredItem is Weapon weapon)

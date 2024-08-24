@@ -6,6 +6,7 @@ using LootValueEX.Extensions;
 using Sirenix.Serialization;
 using SPT.Reflection.Utils;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using CurrencyUtil = GClass2531;
 
@@ -33,11 +34,19 @@ namespace LootValueEX.Utils
             );
         }
 
-        internal static Structs.TraderOffer GetItemHighestTradingOffer(Item item)
+        internal async static Task<Structs.TraderOffer> GetItemHighestTradingOffer(Item item, CancellationToken cancellationToken)
         {
+            Mod.Log.LogDebug($"Task for item {item.TemplateId} has been scheduled");
+            await Task.Delay(2500);
             Structs.TraderOffer highestOffer = new Structs.TraderOffer();
             foreach (TraderClass trader in ClientAppUtils.GetMainApp().GetClientBackEndSession().Traders)
             {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    Mod.Log.LogDebug($"Task for item {item.TemplateId} has been canceled.");
+                    throw new TaskCanceledException();
+                }
+
                 if (Common.Settings.TraderBlacklistList.Contains(trader.Id.ToLower()))
                     continue;
 
@@ -48,6 +57,7 @@ namespace LootValueEX.Utils
                 if (IsValidOffer(currentOffer) || currentOffer.Price > highestOffer.Price)
                     highestOffer = currentOffer;
             }
+            Mod.Log.LogDebug($"Task for item {item.TemplateId} has been finished");
             return highestOffer;
         }
 
@@ -59,7 +69,7 @@ namespace LootValueEX.Utils
             GClass2063.Class1765 sellTask = new GClass2063.Class1765();
             sellTask.source = new TaskCompletionSource<bool>();
             Shared.Session.ConfirmSell(
-                trader.Id, 
+                trader.Id,
                 [new EFT.Trading.TradingItemReference() { Item = item, Count = item.StackObjectsCount }], 
                 traderOffer.Price, 
                 new Callback(sellTask.method_0));
