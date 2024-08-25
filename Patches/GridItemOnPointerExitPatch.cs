@@ -13,13 +13,13 @@ namespace LootValueEX.Patches
 		static void Prefix(GridItemView __instance, PointerEventData eventData)
 		{
 
-			if (Mod.TaskCache.taskDict.TryGetValue(__instance.Item.TemplateId, out Structs.TimestampedTask item))
+			if (Mod.TraderOfferTaskCache.taskDict.TryGetValue(__instance.Item.Id, out Structs.TimestampedTask item))
 			{
 				if (!item.Task.IsCompleted)
 				{
 					item.CancellationTokenSource.Cancel();
 					item.CancellationTokenSource.Dispose();
-					Mod.TaskCache.taskDict.TryRemove(__instance.Item.TemplateId, out _);
+					Mod.TraderOfferTaskCache.taskDict.TryRemove(__instance.Item.Id, out _);
 				}
 			}
 

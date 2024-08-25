@@ -11,13 +11,13 @@ namespace LootValueEX
         public const string pluginName = "LootValueEX";
         public const string pluginVersion = "0.2.0";
 		public static ManualLogSource Log;
-		internal static Common.TaskCache TaskCache;
+		internal static Common.TaskCache TraderOfferTaskCache;
 
         private void Awake()
 		{
             Config.SaveOnConfigSet = true;
 			Log = base.Logger;
-			TaskCache = new Common.TaskCache();
+			TraderOfferTaskCache = new Common.TaskCache<Structs.TraderOffer>(-1);
             Utils.SettingsUtils.SetupSettings(Config);
 
 			new Patches.TraderPatch().Enable();

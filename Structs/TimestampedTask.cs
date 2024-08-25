@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace LootValueEX.Structs
 {
-    internal struct TimestampedTask
+    internal struct TimestampedTask<T>
     {
         internal CancellationTokenSource CancellationTokenSource { get; }
-        internal Task<TraderOffer> Task { get; }
+        internal Task<T> Task { get; }
         internal long Timestamp { get; }
 
-        internal TimestampedTask(CancellationTokenSource cancellationTokenSource, Task<Structs.TraderOffer> task, long timestamp)
+        internal TimestampedTask(CancellationTokenSource cancellationTokenSource, Task<T> task, long timestamp)
         {
             CancellationTokenSource = cancellationTokenSource;
             Task = task;

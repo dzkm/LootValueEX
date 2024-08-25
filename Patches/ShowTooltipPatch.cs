@@ -7,7 +7,6 @@ using static LootValueEX.Extensions.TooltipExtensions;
 using System.Threading.Tasks;
 using Sirenix.Serialization;
 using EFT.UI.DragAndDrop;
-using LootValueEX.Structs;
 
 namespace LootValueEX.Patches
 {
@@ -43,7 +42,7 @@ namespace LootValueEX.Patches
             }
 
             Common.Tooltip.SimpleTooltip = __instance;
-            Mod.TaskCache.taskDict.TryGetValue(Shared.hoveredItem.TemplateId, out Structs.TimestampedTask timestampedTask);
+            Mod.TraderOfferTaskCache.taskDict.TryGetValue(Shared.hoveredItem.Id, out Structs.TimestampedTask timestampedTask);
             text += "<br><color=red>Fetching prices...</color>";
         }
 
@@ -53,7 +52,7 @@ namespace LootValueEX.Patches
             if(Shared.hoveredItem == null)
                 return;
 
-            if(!Mod.TaskCache.taskDict.TryGetValue(Shared.hoveredItem.TemplateId, out TimestampedTask timestampedTask))
+            if(!Mod.TraderOfferTaskCache.taskDict.TryGetValue(Shared.hoveredItem.Id, out Structs.TimestampedTask timestampedTask))
             {
                 __instance.SetText(text.Replace("Fetching prices...", "Failed to fetch price."));
                 return;

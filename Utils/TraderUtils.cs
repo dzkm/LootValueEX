@@ -1,11 +1,8 @@
 ﻿using Comfort.Common;
 using EFT.InventoryLogic;
 using EFT.UI;
-using EFT.UI.Ragfair;
 using LootValueEX.Extensions;
-using Sirenix.Serialization;
 using SPT.Reflection.Utils;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using CurrencyUtil = GClass2531;

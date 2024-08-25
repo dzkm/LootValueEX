@@ -1,33 +1,55 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Caching;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace LootValueEX.Common
 {
-    internal class TaskCache
+    internal class TaskCache<T>
     {
-        internal ConcurrentDictionary<string, Structs.TimestampedTask> taskDict = new ConcurrentDictionary<string, Structs.TimestampedTask>();
+        internal ConcurrentDictionary<string, Structs.TimestampedTask<T>> taskDict = new ConcurrentDictionary<string, Structs.TimestampedTask<T>>();
+        private long ExpireInSeconds;
 
-        public bool AddTask(string itemTemplateId, Task task, long unixTimestamp)
+        internal TaskCache(long expireInSeconds)
         {
-            return false;
+            ExpireInSeconds = expireInSeconds;
         }
 
-        public Structs.TimestampedTask GetItem(string key)
+        public bool AddTask(string itemTemplateId, Task<T> task, CancellationTokenSource cancellationTokenSource)
         {
-            Structs.TimestampedTask itemTask;
-            taskDict.TryGetValue(key, out itemTask);
-            return itemTask;
+            return taskDict.TryAdd(itemTemplateId, 
+                new Structs.TimestampedTask<T>(
+                    cancellationTokenSource,
+                    task,
+                    DateTimeOffset.Now.ToUnixTimeSeconds()
+                    )
+                );
+        }
 
+        public Structs.TimestampedTask<T> GetItem(string key)
+        {
+            if (!taskDict.TryGetValue(key, out Structs.TimestampedTask<T> itemTask))
+                return default;
+            return itemTask;
         }
 
         public bool RemoveItem(string key)
         {
             return taskDict.TryRemove(key, out _);
+        }
+
+        public bool IsItemCacheExpired(string key)
+        {
+            Structs.TimestampedTask<T> item = this.GetItem(key);
+            if (item.Equals(default(Structs.TimestampedTask<T>)))
+            {
+                return true;
+            }
+            if((DateTimeOffset.Now.ToUnixTimeSeconds() - item.Timestamp) > ExpireInSeconds)
+            {
+                return true;
+            }
+            return false;
         }
 
         public void EraseCache()

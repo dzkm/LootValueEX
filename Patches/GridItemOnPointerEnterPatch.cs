@@ -23,17 +23,17 @@ namespace LootValueEX.Patches
 			string itemTemplateId = __instance.Item.TemplateId;
 			if (Common.Settings.ItemBlacklistList.Contains(itemTemplateId))
 			{
-				Mod.Log.LogDebug($"Item {itemTemplateId} is blacklisted.");
+				Mod.Log.LogDebug($"Item with template id {itemTemplateId} is blacklisted.");
 				return;
 			}
 			Shared.hoveredItem = __instance.Item;
-			if (Mod.TaskCache.taskDict.TryGetValue(itemTemplateId, out Structs.TimestampedTask itemTask)){
-				Mod.Log.LogDebug($"Item {itemTemplateId} has been cached.");
+			if (Mod.TraderOfferTaskCache.taskDict.TryGetValue(__instance.Item.Id, out Structs.TimestampedTask itemTask)){
+				Mod.Log.LogDebug($"Item ID {__instance.Item.Id} has been cached.");
 				return;
 			}
             CancellationTokenSource cancellationTokenSource = new CancellationTokenSource(5000);
             itemTask = new Structs.TimestampedTask(cancellationTokenSource, Utils.TraderUtils.GetItemHighestTradingOffer(__instance.Item, cancellationTokenSource.Token), DateTimeOffset.UtcNow.ToUnixTimeSeconds());
-            Mod.TaskCache.taskDict.TryAdd(__instance.Item.TemplateId, itemTask);
+            Mod.TraderOfferTaskCache.taskDict.TryAdd(__instance.Item.Id, itemTask);
         }
 	}
 }
