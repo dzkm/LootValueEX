@@ -10,33 +10,43 @@ namespace LootValueEX.Extensions
     {
         public static string BuildToolTipText(this Structs.ToolTipText toolTipText)
         {
-            double bestValue = toolTipText.TraderPricePerUnit;
-            string bestSeller = toolTipText.TraderName;
-            if (toolTipText.RagfairPricePerUnit > toolTipText.TraderPricePerUnit)
-            {
-                bestValue = toolTipText.RagfairPricePerUnit;
-                bestSeller = "Fleamarket";
-            }
-
-            if(bestValue <= 0)
-            {
+            if (toolTipText.RagfairPrice <= 0 && toolTipText.TraderPrice <= 0)
                 return "<br><color=#ff0000>Not available for selling</color>";
+
+            string highlightText = "<color=#FDDD45>{0}</color>";
+            string ragfairTitle = "RAG FAIR".Localized();
+            // "{Trader}: {Price} {Total}<br>{Ragfair}: {Price} {Total} ({SellChance}%)
+            string priceFormat = "{0}: {1} Total:{2}<br>{4}: {5} Total: {6} ({7}%)".Localized();
+
+            if (toolTipText.RagfairPrice > toolTipText.TraderPrice)
+            {
+                ragfairTitle = string.Format(highlightText, ragfairTitle);
+                //ragfairTitle = string.Format(highlightText, toolTipText.RagfairPrice > toolTipText.TraderPrice ? "RAG FAIR".Localized() : toolTipText.TraderName);
             }
-            // TODO: Fix this stinky code. Will show a wrong value when the item is on trader and stackable.
-            double singularPrice = bestValue / toolTipText.ItemStackCount;
-            string perSlotColor = SlotColoring.GetColorFromValuePerSlots((int)bestValue);
-            string highlightText = $"<color=#FDDD45>{bestSeller}</color>";
+            else
+            {
+                toolTipText.TraderName = string.Format(highlightText, toolTipText.TraderName);
+            }
 
             if (Common.Settings.OnlyShowTotalValue.Value)
             {
-                return toolTipText.Text += $"<br>{highlightText}: <color={perSlotColor}>{bestValue.FormatNumber()}</color>";
+                priceFormat = "{0}: {1}<br>{4}: {5} ({6}%)";
+                return toolTipText.Text += string.Format(priceFormat,
+                    toolTipText.TraderName,
+                    "Total: " + toolTipText.TraderPrice,
+                    ragfairTitle,
+                    toolTipText.RagfairPrice,
+                    toolTipText.RagfairChance);
             }
 
-            toolTipText.Text += $"<br>{highlightText}: <color={perSlotColor}>{singularPrice.FormatNumber()}</color>";
-
+            double singularTraderPrice = toolTipText.TraderPrice;
+            double singularRagfairPrice = toolTipText.RagfairPrice;
             if (toolTipText.ItemStackCount > 1)
-                toolTipText.Text += $" Total: {bestValue.FormatNumber()}";
-            return toolTipText.Text;
+            {
+                singularRagfairPrice = toolTipText.RagfairPrice / toolTipText.ItemStackCount;
+                singularTraderPrice = toolTipText.TraderPrice / toolTipText.ItemStackCount;
+            }
+            return string.Format(priceFormat, toolTipText.TraderName, singularTraderPrice, toolTipText.TraderPrice, ragfairTitle, singularRagfairPrice, toolTipText.RagfairPrice, toolTipText.RagfairChance);
         }
     }
 }

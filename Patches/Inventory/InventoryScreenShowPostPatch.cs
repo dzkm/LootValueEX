@@ -3,9 +3,11 @@ using HarmonyLib;
 using System.Reflection;
 using SPT.Reflection.Patching;
 using System.Linq;
-using System.Collections.Generic;
-using System;
 using EFT.InventoryLogic;
+using System;
+using System.Collections.Generic;
+using LootValueEX.Utils;
+using System.Threading.Tasks;
 
 namespace LootValueEX.Patches.Inventory
 {
@@ -16,23 +18,26 @@ namespace LootValueEX.Patches.Inventory
         [PatchPostfix]
         public static void Postfix(InventoryControllerClass controller, LootItemClass lootItem, ItemContextAbstractClass itemContext)
         {
-            controller.Inventory.GetPlayerItems(EPlayerItems.Equipment).Do(RecursiveSearch);
-            if (lootItem == null)
+            List<Item> itemsToProcess = new List<Item>();
+            if (!RaidUtils.HasRaidStarted())
             {
-                return;
+                IEnumerable<Item> stashItems = controller.Inventory.GetPlayerItems(EPlayerItems.Equipment).SelectMany(item => item.GetAllItems(Mod.IsWeaponOrModPredicate));
+                itemsToProcess.AddRange(stashItems);
             }
-            if(lootItem is EquipmentClass)
+            if(lootItem is not null)
             {
-                lootItem.AllSlots.Do(slots => slots.Items.Do(RecursiveSearch));
-                return;
+                if (lootItem is EquipmentClass)
+                {
+                    IEnumerable<Item> deadPlayerItems = lootItem.AllSlots.SelectMany(slots => slots.Items.SelectMany(item => item.GetAllItems(Mod.IsWeaponOrModPredicate)));
+                    itemsToProcess.AddRange(deadPlayerItems);
+                }
+                else
+                {
+                    IEnumerable<Item> lootItems = lootItem.Grids.SelectMany(itemSlot => itemSlot.Items.SelectMany(item => item.GetAllItems(Mod.IsWeaponOrModPredicate)));
+                    itemsToProcess.AddRange(lootItems);
+                }
             }
-            lootItem.Grids.Do(itemSlot => itemSlot.Items.Do(RecursiveSearch));
-            return;
-        }
-        public static void RecursiveSearch(Item item)
-        {
-            Mod.Log.LogInfo(string.Format("Item name: {0} -> {1} ({2})", item.LocalizedName(), item.GetType(), item.Parent?.ContainerName.Localized()));
-            item.GetAllItems().Where(queryItem => !queryItem.Equals(item)).Do(RecursiveSearch);
+            Common.Actions.ProcessItemList(itemsToProcess);
         }
     }
 }

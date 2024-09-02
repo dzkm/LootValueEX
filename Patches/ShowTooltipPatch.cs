@@ -7,6 +7,7 @@ using static LootValueEX.Extensions.TooltipExtensions;
 using System.Threading.Tasks;
 using Sirenix.Serialization;
 using EFT.UI.DragAndDrop;
+using LootValueEX.Extensions;
 
 namespace LootValueEX.Patches
 {
@@ -22,27 +23,16 @@ namespace LootValueEX.Patches
 		private static void ScheduleTask(ref string text, ref float delay, SimpleTooltip __instance)
 		{
 			delay = 0;
-            Mod.Log.LogDebug("Tooltip has been invoked");
             if (Shared.hoveredItem == null)
-			{
-                Mod.Log.LogDebug("Hovered item is null");
                 return;
-			}
 
-			if(!Utils.ItemUtils.IsItemExamined(Shared.hoveredItem))
-            {
-                Mod.Log.LogDebug("Item is not examined");
+            if (!Shared.hoveredItem.IsExamined())
                 return;
-            }
 
 			if(!Common.Settings.ShowPrices.Value)
-            {
                 Mod.Log.LogDebug("Prices are not enabled");
-                return;
-            }
 
             Common.Tooltip.SimpleTooltip = __instance;
-            Mod.TraderOfferTaskCache.taskDict.TryGetValue(Shared.hoveredItem.Id, out Structs.TimestampedTask timestampedTask);
             text += "<br><color=red>Fetching prices...</color>";
         }
 
@@ -51,28 +41,45 @@ namespace LootValueEX.Patches
         {
             if(Shared.hoveredItem == null)
                 return;
-
-            if(!Mod.TraderOfferTaskCache.taskDict.TryGetValue(Shared.hoveredItem.Id, out Structs.TimestampedTask timestampedTask))
-            {
-                __instance.SetText(text.Replace("Fetching prices...", "Failed to fetch price."));
-                return;
-            };
-            timestampedTask.Task.ContinueWith((task) => {
+            
+            Structs.ToolTipText toolTipText = new("<br><color=red>Failed to fetch prices</color>", 0, 0, 0, "<color=red>No trader available</color>", 1);
+            
+            Structs.TimestampedTask<Structs.TraderOfferStruct> traderTask = Mod.TraderOfferTaskCache.GetTask(Shared.hoveredItem.GetItemID());
+            Structs.TimestampedTask<Structs.RagfairOfferStruct> ragfairTask = Mod.RagfairOfferTaskCache.GetTask(Shared.hoveredItem.GetItemID());
+            traderTask.Task.ContinueWith((task) => {
                 if (task.IsCanceled)
+                    return;
+
+                if (task.IsFaulted)
                 {
-                    Mod.Log.LogDebug("Task has been canceled.");
+                    Mod.Log.LogError(task.Exception);
                     return;
                 }
-                Mod.Log.LogDebug($"Task has been finished with status {task.Status}. Replacing text");
-                Structs.ToolTipText toolTipText = new Structs.ToolTipText(
-                "<br><color=#ffffff>Sell Price:</color>",
-                0,
-                task.Result.Price,
-                task.Result.TraderName,
-                Shared.hoveredItem.StackObjectsCount
-                );
-                __instance.SetText(text.Replace("<br><color=red>Fetching prices...</color>", toolTipText.BuildToolTipText()));
+
+                if(!task.Result.IsValid)
+                    return;
+
+                toolTipText.TraderName = task.Result.TraderName;
+                toolTipText.TraderPrice = task.Result.Price;
             });
+            ragfairTask.Task.ContinueWith((task) =>
+            {
+                if (task.IsCanceled)
+                    return;
+
+                if (task.IsFaulted)
+                {
+                    Mod.Log.LogError(task.Exception);
+                    return;
+                }
+                if (!task.Result.IsValid)
+                    return;
+
+                toolTipText.RagfairPrice = task.Result.Price;
+            });
+            toolTipText.Text = "<br><color=white>Sell prices:</color><br>";
+            toolTipText.ItemStackCount = Shared.hoveredItem.StackObjectsCount;
+            __instance.SetText(text.Replace("<br><color=red>Fetching prices...</color>", toolTipText.BuildToolTipText()));
         }
     }
 }

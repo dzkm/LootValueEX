@@ -17,12 +17,7 @@ namespace LootValueEX.Patches.Inventory
         {
             IEnumerable<Item> items;
             __instance.method_3(out items);
-            items.Do(RecursiveSearch);
-        }
-        public static void RecursiveSearch(Item item)
-        {
-            Mod.Log.LogInfo(string.Format("Item name: {0} -> {1} ({2})", item.LocalizedName(), item.GetType(), item.Parent?.ContainerName));
-            item.GetAllItems().Where(queryItem => !queryItem.Equals(item)).Do(RecursiveSearch);
+            Common.Actions.ProcessItemList(items.SelectMany(item => item.GetAllItems(Mod.IsWeaponOrModPredicate)).ToList());
         }
     }
 }

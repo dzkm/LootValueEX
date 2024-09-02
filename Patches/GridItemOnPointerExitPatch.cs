@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using EFT.UI.DragAndDrop;
+using LootValueEX.Extensions;
 using SPT.Reflection.Patching;
 using UnityEngine.EventSystems;
 
@@ -12,19 +13,10 @@ namespace LootValueEX.Patches
 		[PatchPrefix]
 		static void Prefix(GridItemView __instance, PointerEventData eventData)
 		{
-
-			if (Mod.TraderOfferTaskCache.taskDict.TryGetValue(__instance.Item.Id, out Structs.TimestampedTask item))
+			if(Shared.hoveredItem != null)
 			{
-				if (!item.Task.IsCompleted)
-				{
-					item.CancellationTokenSource.Cancel();
-					item.CancellationTokenSource.Dispose();
-					Mod.TraderOfferTaskCache.taskDict.TryRemove(__instance.Item.Id, out _);
-				}
+				Shared.hoveredItem = null;
 			}
-
-			Shared.isStashItemHovered = false;
-			Shared.hoveredItem = null;
 		}
 	}
 }

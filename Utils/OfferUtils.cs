@@ -9,12 +9,6 @@ namespace LootValueEX.Utils
     internal class OfferUtils
     {
 
-        public static void SellToHighestTrader(Item item)
-        {
-            Structs.TraderOffer traderOffer = ItemUtils.GetBestTradingOffer(item).Result;
-            TraderUtils.SellItem(item, traderOffer);
-        }
-
         public static void QuickSellToRagfair(Item item)
         {
             double? fleaPrice = Task.Run(() => FleaPriceCache.FetchPrice(item.TemplateId)).Result;
@@ -24,7 +18,7 @@ namespace LootValueEX.Utils
 
         public static void ComparePricesAndSellItem(Item item)
         {
-            Structs.TraderOffer traderOffer = Utils.ItemUtils.GetBestTradingOffer(item).Result;
+            Structs.TraderOfferStruct traderOffer = Utils.ItemUtils.GetBestTradingOffer(item).Result;
             double? fleaPrice = Task.Run(() => FleaPriceCache.FetchPrice(item.TemplateId)).Result;
             if(fleaPrice.HasValue && fleaPrice.Value > traderOffer.Price)
             {

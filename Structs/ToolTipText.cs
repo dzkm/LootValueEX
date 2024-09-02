@@ -9,16 +9,18 @@ namespace LootValueEX.Structs
     internal struct ToolTipText
     {
         internal string Text { get; set; }
-        internal readonly double RagfairPricePerUnit { get; }
-        internal readonly double TraderPricePerUnit { get; }
-        internal readonly string TraderName { get; }
-        internal readonly int ItemStackCount { get; }
+        internal double RagfairPrice { get; set; }
+        internal double RagfairChance { get; set; }
+        internal double TraderPrice { get; set; }
+        internal string TraderName { get; set; }
+        internal int ItemStackCount { get; set; }
 
-        internal ToolTipText(string text, double ragfairPricePerUnit, double traderPricePerUnit, string traderName, int itemStackCount)
+        internal ToolTipText(string text, double ragfairPrice, double ragfairChance, double traderPrice, string traderName, int itemStackCount)
         {
             Text = text;
-            RagfairPricePerUnit = ragfairPricePerUnit;
-            TraderPricePerUnit = traderPricePerUnit;
+            RagfairPrice = ragfairPrice;
+            RagfairChance = ragfairChance;
+            TraderPrice = traderPrice;
             TraderName = traderName;
             ItemStackCount = itemStackCount;
         }

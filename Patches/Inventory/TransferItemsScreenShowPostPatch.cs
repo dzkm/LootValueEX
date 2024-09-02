@@ -24,13 +24,8 @@ namespace LootValueEX.Patches.Inventory
              * method_1 returns true if the item is not an quest item
              */
             // I know we are doing double the work here, since this is already done in TransferItemsScreen.Show(), but it's the only way to get the items.
-            IEnumerable<Item> itemArray = messages.SelectMany(TransferItemsScreen.Class2719.class2719_0.method_0).Where(TransferItemsScreen.Class2719.class2719_0.method_1);
-            itemArray.Do(RecursiveSearch);
-        }
-        public static void RecursiveSearch(Item item)
-        {
-            Mod.Log.LogInfo(string.Format("Item name: {0} -> {1} ({2})", item.LocalizedName(), item.GetType(), item.Parent?.ContainerName));
-            item.GetAllItems().Where(queryItem => !queryItem.Equals(item)).Do(RecursiveSearch);
+            IEnumerable<Item> items = messages.SelectMany(TransferItemsScreen.Class2719.class2719_0.method_0).Where(TransferItemsScreen.Class2719.class2719_0.method_1);
+            Common.Actions.ProcessItemList(items.SelectMany(item => item.GetAllItems(Mod.IsWeaponOrModPredicate)).ToList());
         }
     }
 }

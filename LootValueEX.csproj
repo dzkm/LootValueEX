@@ -32,8 +32,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Common\Actions.cs" />
     <Compile Include="Common\TaskCache.cs" />
     <Compile Include="CustomRequestHandler.cs" />
+    <Compile Include="Extensions\ClientAppUtilsExtensions.cs" />
+    <Compile Include="Extensions\ItemExtensions.cs" />
     <Compile Include="Extensions\TooltipExtensions.cs" />
     <Compile Include="Extensions\TraderClassExtensions.cs" />
     <Compile Include="Extensions\PlayerExtensions.cs" />
@@ -45,7 +48,7 @@
     <Compile Include="Patches\WhatScreenIsThisPatch.cs" />
     <Compile Include="Shared.cs" />
     <Compile Include="Common\Tooltip.cs" />
-    <Compile Include="Structs\FleaPriceRequest.cs" />
+    <Compile Include="Structs\RagfairBackendRequest.cs" />
     <Compile Include="Patches\ItemViewOnClickPatch.cs" />
     <Compile Include="Patches\GridItemOnPointerEnterPatch.cs" />
     <Compile Include="Patches\GridItemOnPointerExitPatch.cs" />
@@ -54,18 +57,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Patches\ShowTooltipPatch.cs" />
     <Compile Include="Common\Settings.cs" />
+    <Compile Include="Structs\RagfairOfferStruct.cs" />
+    <Compile Include="Structs\TraderOfferStruct.cs" />
     <Compile Include="Structs\TimestampedTask.cs" />
-    <Compile Include="Structs\Offers\RagfairOffer.cs" />
+    <Compile Include="Offers\RagfairOffer.cs" />
     <Compile Include="Structs\SellItemToTraderRequest.cs" />
     <Compile Include="SlotColoring.cs" />
     <Compile Include="Structs\ToolTipText.cs" />
-    <Compile Include="Structs\Offers\TraderOffer.cs" />
-    <Compile Include="Utils\ItemUtils.cs" />
+    <Compile Include="Offers\TraderOffer.cs" />
     <Compile Include="Utils\OfferUtils.cs" />
-    <Compile Include="Utils\RagfairUtils.cs" />
     <Compile Include="Utils\RaidUtils.cs" />
     <Compile Include="Utils\SettingsUtils.cs" />
-    <Compile Include="Utils\TraderUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -773,6 +775,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="LootValueBackend\.vs\LootValueBackend\v17\" />
+    <Folder Include="Structs\Offers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

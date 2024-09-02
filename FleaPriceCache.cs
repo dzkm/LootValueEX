@@ -30,7 +30,7 @@ namespace LootValueEX
 
 		private static async Task<string> QueryPrice(string templateId)
 		{
-			return await CustomRequestHandler.PostJsonAsync("/LootValue/GetItemLowestFleaPrice", JsonConvert.SerializeObject(new Structs.FleaPriceRequest(templateId)));
+			return await CustomRequestHandler.PostJsonAsync("/LootValue/GetItemLowestFleaPrice", JsonConvert.SerializeObject(new Structs.RagfairBackendRequest(templateId)));
 		}
 
 		private static async Task<double?> QueryAndTryUpsertPrice(string templateId, bool update)
