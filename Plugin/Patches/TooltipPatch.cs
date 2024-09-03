@@ -2,6 +2,7 @@
 using SPT.Reflection.Patching;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -16,9 +17,15 @@ namespace LootValueEX.Patches
         [PatchPostfix]
         public static void AlterText(SimpleTooltip __instance, string text)
         {
+            StackTrace stackTrace = new StackTrace();
+            Plugin.Log.LogDebug("Stacktrace of tooltip call: " + stackTrace.ToString());
             if (GridItemTooltipPatch.PatchTooltip)
             {
-                __instance.SetText(string.Concat(text, "<br><color=#ff0fff><b>Stinky</b><color>"));
+                __instance.SetText(string.Concat(text, "<br><color=#ff0fff><b>GridItemView</b></color>"));
+            }
+            if (InsuranceSlotPatch.PatchTooltip)
+            {
+                __instance.SetText(string.Concat(text, "<br><color=#00ffff><b>InsuranceItemView</b></color>"));
             }
             return;
         }
