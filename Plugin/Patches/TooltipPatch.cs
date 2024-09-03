@@ -31,6 +31,10 @@ namespace LootValueEX.Patches
             {
                 __instance.SetText(string.Concat(text, "<br><color=#00ff00><b>PriceTooltip</b></color>"));
             }
+            if (HandbookPatching.PatchTooltip)
+            {
+                __instance.SetText(string.Concat(text, $"<br>TemplateID: {HandbookPatching.HoveredItem?.TemplateId}<br><color=#0000ff><b>EntityIcon</b></color>"));
+            }
             return;
         }
     }

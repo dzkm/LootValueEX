@@ -15,6 +15,7 @@ namespace LootValueEX
             new Patches.TooltipPatch().Enable();
             new Patches.InsuranceSlotPatch().Enable();
             new Patches.ItemPricePatch().Enable();
+            new Patches.HandbookPatching().Enable();
         }
     }
 }
