@@ -27,7 +27,7 @@ namespace LootValueEX.Patches
             {
                 __instance.SetText(string.Concat(text, "<br><color=#00ffff><b>InsuranceItemView</b></color>"));
             }
-            if (TradingItemPatch.PatchTooltip)
+            if (ItemPricePatch.PatchTooltip)
             {
                 __instance.SetText(string.Concat(text, "<br><color=#00ff00><b>PriceTooltip</b></color>"));
             }
