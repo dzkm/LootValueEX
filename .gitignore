@@ -434,3 +434,5 @@ yarn.lock
 Shared/*
 .vscode/*
 References/Managed
+*.js
+*.js.map

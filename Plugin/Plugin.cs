@@ -3,13 +3,16 @@ using BepInEx.Logging;
 
 namespace LootValueEX
 {
-    [BepInPlugin("pro.kaiden.lootvalueex", "LootValueEX", "0.2.0")]
+    [BepInPlugin("pro.kaiden.lootvalueex", "LootValueEX", "0.1.0")]
     internal class Plugin : BaseUnityPlugin
     {
         internal static ManualLogSource Log;
         private void Awake()
         {
             Log = base.Logger;
+
+            new Patches.GridItemTooltipPatch().Enable();
+            new Patches.TooltipPatch().Enable();
         }
     }
 }
