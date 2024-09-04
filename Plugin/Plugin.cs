@@ -13,6 +13,7 @@ namespace LootValueEX
 
             new Patches.GridItemTooltipPatch().Enable();
             new Patches.TooltipPatch().Enable();
+            new Patches.InsuranceGridPatch().Enable();
             new Patches.InsuranceSlotPatch().Enable();
             new Patches.ItemPricePatch().Enable();
             new Patches.HandbookPatching().Enable();

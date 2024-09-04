@@ -25,7 +25,7 @@ namespace LootValueEX.Patches
             }
             if (InsuranceSlotPatch.PatchTooltip)
             {
-                __instance.SetText(string.Concat(text, "<br><color=#00ffff><b>InsuranceItemView</b></color>"));
+                __instance.SetText(string.Concat(text, "<br><color=#00ffff><b>InsuranceSlotItemView</b></color>"));
             }
             if (ItemPricePatch.PatchTooltip)
             {
@@ -34,6 +34,10 @@ namespace LootValueEX.Patches
             if (HandbookPatching.PatchTooltip)
             {
                 __instance.SetText(string.Concat(text, $"<br>TemplateID: {HandbookPatching.HoveredItem?.TemplateId}<br><color=#0000ff><b>EntityIcon</b></color>"));
+            }
+            if (InsuranceGridPatch.PatchTooltip)
+            {
+                __instance.SetText(string.Concat(text, $"<br>TemplateID: {InsuranceGridPatch.HoveredItem?.TemplateId}<br><color=#21f788><b>InsuranceItemView</b></color>"));
             }
             return;
         }
