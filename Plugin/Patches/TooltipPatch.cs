@@ -18,7 +18,7 @@ namespace LootValueEX.Patches
         public static void AlterText(SimpleTooltip __instance, string text)
         {
             StackTrace stackTrace = new StackTrace();
-            Plugin.Log.LogDebug("Stacktrace of tooltip call: " + stackTrace.ToString());
+            Plugin.Log.LogDebug("Stacktrace of tooltip call: \n" + stackTrace.ToString());
             if (GridItemTooltipPatch.PatchTooltip)
             {
                 __instance.SetText(string.Concat(text, "<br><color=#ff0fff><b>GridItemView</b></color>"));
@@ -27,9 +27,9 @@ namespace LootValueEX.Patches
             {
                 __instance.SetText(string.Concat(text, "<br><color=#00ffff><b>InsuranceSlotItemView</b></color>"));
             }
-            if (ItemPricePatch.PatchTooltip)
+            if (ItemPricePatch.PatchTooltip && TradingItemPatch.HoveredItem != null)
             {
-                __instance.SetText(string.Concat(text, "<br><color=#00ff00><b>PriceTooltip</b></color>"));
+                __instance.SetText(string.Concat(text, $"<br>TemplateID: {TradingItemPatch.HoveredItem?.TemplateId}<br><color=#00ff00><b>PriceTooltip</b></color>"));
             }
             if (HandbookPatching.PatchTooltip)
             {
