@@ -25,7 +25,7 @@ namespace LootValueEX.Patches
             }
             if (InsuranceSlotPatch.PatchTooltip)
             {
-                __instance.SetText(string.Concat(text, "<br><color=#00ffff><b>InsuranceSlotItemView</b></color>"));
+                __instance.SetText(string.Concat(text, $"<br>TemplateID: {InsuranceSlotPatch.HoveredItem?.TemplateId}<br><color=#00ffff><b>InsuranceSlotItemView</b></color>"));
             }
             if (ItemPricePatch.PatchTooltip && TradingItemPatch.HoveredItem != null)
             {
