@@ -1,5 +1,6 @@
 ﻿using EFT.UI;
 using SPT.Reflection.Patching;
+using SPT.Reflection.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,13 +22,13 @@ namespace LootValueEX.Patches
             Plugin.Log.LogDebug("Stacktrace of tooltip call: \n" + stackTrace.ToString());
             if (GridItemTooltipPatch.PatchTooltip)
             {
-                __instance.SetText(string.Concat(text, $"<br>TemplateID: {GridItemTooltipPatch.HoveredItem?.TemplateId}<br><color=#ff0fff><b>GridItemView</b></color>"));
+                __instance.SetText(string.Concat(text, $"<br>TemplateID: {GridItemTooltipPatch.HoveredItem?.TemplateId}<br>Item hashsum: {GridItemTooltipPatch.HoveredItem?.GetHashSum()}<br><color=#ff0fff><b>GridItemView</b></color>"));
             }
             if (InsuranceSlotPatch.PatchTooltip)
             {
                 __instance.SetText(string.Concat(text, $"<br>TemplateID: {InsuranceSlotPatch.HoveredItem?.TemplateId}<br><color=#00ffff><b>InsuranceSlotItemView</b></color>"));
             }
-            if (ItemPricePatch.PatchTooltip && TradingItemPatch.HoveredItem != null)
+            if (ItemPricePatch.PatchTooltip)
             {
                 __instance.SetText(string.Concat(text, $"<br>TemplateID: {TradingItemPatch.HoveredItem?.TemplateId}<br><color=#00ff00><b>PriceTooltip</b></color>"));
             }

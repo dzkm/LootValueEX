@@ -10,11 +10,14 @@ namespace LootValueEX.Patches
             null,
             [typeof(EFT.InventoryLogic.EOwnerType), typeof(string), typeof(int), typeof(string)],
             null);
-        internal static bool PatchTooltip = false;
+        internal static bool PatchTooltip { get; private set } = false;
 
         [PatchPrefix]
         internal static void EnableTooltipPatch()
         {
+            if (TradingItemPatch.HoveredItem == null)
+                return;
+
             PatchTooltip = true;
         }
 
