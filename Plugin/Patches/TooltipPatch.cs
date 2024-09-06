@@ -21,7 +21,7 @@ namespace LootValueEX.Patches
             Plugin.Log.LogDebug("Stacktrace of tooltip call: \n" + stackTrace.ToString());
             if (GridItemTooltipPatch.PatchTooltip)
             {
-                __instance.SetText(string.Concat(text, "<br><color=#ff0fff><b>GridItemView</b></color>"));
+                __instance.SetText(string.Concat(text, $"<br>TemplateID: {GridItemTooltipPatch.HoveredItem?.TemplateId}<br><color=#ff0fff><b>GridItemView</b></color>"));
             }
             if (InsuranceSlotPatch.PatchTooltip)
             {
