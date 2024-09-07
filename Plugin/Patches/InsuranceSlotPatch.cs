@@ -1,4 +1,5 @@
-﻿using SPT.Reflection.Patching;
+﻿using LootValueEX.Extensions;
+using SPT.Reflection.Patching;
 using System.Reflection;
 
 namespace LootValueEX.Patches
@@ -12,6 +13,8 @@ namespace LootValueEX.Patches
         [PatchPrefix]
         internal static void EnableTooltipPatch(EFT.UI.Insurance.InsuranceSlotItemView __instance)
         {
+            if (!__instance.Item.IsExamined())
+                return;
             PatchTooltip = true;
             HoveredItem = __instance.Item;
         }

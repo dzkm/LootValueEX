@@ -1,4 +1,5 @@
-﻿using SPT.Reflection.Patching;
+﻿using LootValueEX.Extensions;
+using SPT.Reflection.Patching;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,9 @@ namespace LootValueEX.Patches
         [PatchPrefix]
         internal static void EnableTooltipPatch(ref EFT.InventoryLogic.Item ___item_0)
         {
+            if (!___item_0.IsExamined())
+                return;
+
             PatchTooltip = true;
             HoveredItem = ___item_0;
         }

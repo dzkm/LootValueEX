@@ -1,5 +1,8 @@
-﻿using EFT.UI.DragAndDrop;
+﻿using EFT.InventoryLogic;
+using EFT.UI.DragAndDrop;
+using LootValueEX.Extensions;
 using SPT.Reflection.Patching;
+using SPT.Reflection.Utils;
 using System.Reflection;
 
 namespace LootValueEX.Patches
@@ -16,8 +19,11 @@ namespace LootValueEX.Patches
         [PatchPrefix]
         static void EnableTooltipPatch(GridItemView __instance)
         {
-            PatchTooltip = true;
-            HoveredItem = __instance.Item;
+            if (__instance.Item.IsExamined())
+            {
+                PatchTooltip = true;
+                HoveredItem = __instance.Item;
+            }
         }
 
         [PatchPostfix]

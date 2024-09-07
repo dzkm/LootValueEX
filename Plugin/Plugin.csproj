@@ -23,7 +23,7 @@
         <HintPath>..\References\SPT\spt-reflection.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
-        <HintPath>..\References\Managed\Assembly-CSharp.dll</HintPath>
+        <HintPath>..\References\hollowed.dll</HintPath>
     </Reference>
     <Reference Include="BepInEx">
         <HintPath>..\References\BepInEx\BepInEx.dll</HintPath>

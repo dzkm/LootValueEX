@@ -1,4 +1,6 @@
-﻿using SPT.Reflection.Patching;
+﻿using LootValueEX.Extensions;
+using SPT.Reflection.Patching;
+using SPT.Reflection.Utils;
 using System.Reflection;
 
 namespace LootValueEX.Patches
@@ -11,6 +13,8 @@ namespace LootValueEX.Patches
         [PatchPrefix]
         internal static void GetHoveredItem(EFT.UI.DragAndDrop.TradingItemView __instance)
         {
+            if (!__instance.Item.IsExamined())
+                return;
             HoveredItem = __instance.Item;
         }
         [PatchPostfix]
