@@ -40,6 +40,10 @@ namespace LootValueEX.Patches
             {
                 __instance.SetText(string.Concat(text, $"<br>TemplateID: {InsuranceGridPatch.HoveredItem?.TemplateId}<br><color=#21f788><b>InsuranceItemView</b></color>"));
             }
+            if (BarterItemPatch.PatchTooltip)
+            {
+                __instance.SetText(string.Concat(text, $"<br>TemplateID: {BarterItemPatch.HoveredItem?.TemplateId}<br><color=#ff6521><b>TradingRequisitePanel</b></color>"));
+            }
             return;
         }
     }

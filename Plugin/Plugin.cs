@@ -18,6 +18,7 @@ namespace LootValueEX
             new Patches.ItemPricePatch().Enable();
             new Patches.TradingItemPatch().Enable();
             new Patches.HandbookPatching().Enable();
+            new Patches.BarterItemPatch().Enable();
         }
     }
 }
